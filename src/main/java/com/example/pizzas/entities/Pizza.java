@@ -1,9 +1,7 @@
 package com.example.pizzas.entities;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
-import java.sql.Time;
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -14,17 +12,17 @@ public class Pizza {
 
     private String name;
     private int price;
-    private String ingredients;
-    private String uniqueId;
+
+    @ElementCollection
+    private List<String> ingredients = new ArrayList<>();
 
     public Pizza(){
     }
 
-    public Pizza(String name, int price, String ingredients) {
+    public Pizza(String name, int price, List<String> ingredients) {
         this.name = name;
         this.price = price;
         this.ingredients = ingredients;
-        this.uniqueId = name;
     }
 
     public Long getId() {
@@ -47,19 +45,12 @@ public class Pizza {
         this.price = price;
     }
 
-    public String getIngredients() {
+    public List<String> getIngredients() {
         return ingredients;
     }
 
-    public void setIngredients(String ingredients) {
+    public void setIngredients(List<String> ingredients) {
         this.ingredients = ingredients;
     }
 
-    public String getUniqueId() {
-        return uniqueId;
-    }
-
-    public void setUniqueId(String uniqueId) {
-        this.uniqueId = uniqueId;
-    }
 }

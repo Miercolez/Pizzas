@@ -7,6 +7,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 @SpringBootApplication
 public class PizzasApplication {
 
@@ -19,7 +22,7 @@ public class PizzasApplication {
 
         return args -> {
             if (pizzaRepository.count() == 0) {
-                pizzaRepository.save(new Pizza("Hawaii", 70, "Tomatsås, Skinka, Ananas, Ost"));
+                pizzaRepository.save(new Pizza("Hawaii", 70,Arrays.asList("hejsan")));
             }
         };
     }
