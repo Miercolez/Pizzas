@@ -22,7 +22,7 @@ public class PizzasApplication {
 
         return args -> {
             if (pizzaRepository.count() == 0) {
-                pizzaRepository.save(new Pizza("Hawaii", 70,Arrays.asList("hejsan")));
+                pizzaRepository.save(new Pizza("Hawaii", 70,Arrays.asList("Ananas", "Skinka", "Ost")));
             }
         };
     }

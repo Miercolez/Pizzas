@@ -4,10 +4,7 @@ import com.example.pizzas.entities.Pizza;
 import com.example.pizzas.repositories.PizzaRepository;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 public class PizzaController {
@@ -31,7 +28,7 @@ public class PizzaController {
 
         try {
             pizzas.addAll(pizzaRepository.findPizzaByPrice(Integer.parseInt(name)));
-        }catch (NumberFormatException e){
+        } catch (NumberFormatException e) {
         }
 
         return new ArrayList<>(pizzas);
@@ -53,8 +50,31 @@ public class PizzaController {
                 });
     }
 
+    @PatchMapping("/pizzas/{id}")
+    Pizza partialUpdatePizza(@RequestBody Map<String, Object> changes, @PathVariable("id") Long id) {
+
+        Pizza pizza = pizzaRepository.findById(id).get();
+
+        changes.forEach((key, value) -> {
+                    switch (key) {
+                        case "name":
+                            pizza.setName((String) value);
+                            break;
+                        case "price":
+                            pizza.setPrice((int) value);
+                            break;
+                        case "ingredients":
+                            pizza.setIngredients((List<String>) value);
+                            break;
+                    }
+                }
+        );
+
+        return pizzaRepository.save(pizza);
+    }
+
     @DeleteMapping("/pizzas/{id}")
-    void deletePizza(@PathVariable("id") Long id){
+    void deletePizza(@PathVariable("id") Long id) {
         pizzaRepository.deleteById(id);
     }
 

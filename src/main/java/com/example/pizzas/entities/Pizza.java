@@ -17,6 +17,7 @@ public class Pizza {
     private List<String> ingredients = new ArrayList<>();
 
     public Pizza(){
+
     }
 
     public Pizza(String name, int price, List<String> ingredients) {
