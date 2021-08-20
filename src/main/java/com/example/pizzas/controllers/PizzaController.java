@@ -2,7 +2,9 @@ package com.example.pizzas.controllers;
 
 import com.example.pizzas.entities.Pizza;
 import com.example.pizzas.repositories.PizzaRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.*;
 
@@ -21,7 +23,7 @@ public class PizzaController {
     }
 
     @GetMapping("/pizzas/{name}")
-    List<Pizza> getPizzaById(@PathVariable("name") String name) {
+    List<Pizza> getSpecificPizza(@PathVariable("name") String name) {
         HashSet pizzas = new HashSet();
         pizzas.addAll(pizzaRepository.findPizzaByName(name));
         pizzas.addAll(pizzaRepository.findPizzaByIngredients(name));
@@ -30,6 +32,9 @@ public class PizzaController {
             pizzas.addAll(pizzaRepository.findPizzaByPrice(Integer.parseInt(name)));
         } catch (NumberFormatException e) {
         }
+
+        if(pizzas.isEmpty())
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
 
         return new ArrayList<>(pizzas);
     }
@@ -41,6 +46,7 @@ public class PizzaController {
 
     @PutMapping("/pizzas/{id}")
     Optional<Pizza> updatePizza(@RequestBody Pizza newPizza, @PathVariable("id") Long id) {
+
         return pizzaRepository.findById(id)
                 .map(pizza -> {
                     pizza.setName(newPizza.getName());
@@ -48,6 +54,7 @@ public class PizzaController {
                     pizza.setPrice(newPizza.getPrice());
                     return pizzaRepository.save(pizza);
                 });
+
     }
 
     @PatchMapping("/pizzas/{id}")
