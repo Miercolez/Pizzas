@@ -3,9 +3,13 @@ package com.example.pizzas.controllers;
 import com.example.pizzas.entities.Pizza;
 import com.example.pizzas.repositories.PizzaRepository;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.jdbc.CannotGetJdbcConnectionException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.sql.SQLDataException;
+import java.sql.SQLException;
 import java.util.*;
 
 @RestController
@@ -33,15 +37,19 @@ public class PizzaController {
         } catch (NumberFormatException e) {
         }
 
-        if(pizzas.isEmpty())
+        if (pizzas.isEmpty())
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
 
         return new ArrayList<>(pizzas);
     }
 
+
     @PostMapping("/pizzas")
-    Pizza addPizza(@RequestBody Pizza pizza) {
-        return pizzaRepository.save(pizza);
+    ResponseEntity<Pizza> addPizza(@RequestBody Pizza pizza) {
+
+        pizzaRepository.save(pizza);
+
+        return new ResponseEntity<>(pizza, HttpStatus.CREATED);
     }
 
     @PutMapping("/pizzas/{id}")
@@ -54,7 +62,6 @@ public class PizzaController {
                     pizza.setPrice(newPizza.getPrice());
                     return pizzaRepository.save(pizza);
                 });
-
     }
 
     @PatchMapping("/pizzas/{id}")
