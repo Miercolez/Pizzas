@@ -14,7 +14,7 @@ public class SpringFoxConfig {
     //Swagger document : /v3/api-docs
     //Swagger-ui : /swagger-ui/
     public Docket api(){
-        return new Docket(DocumentationType.SWAGGER_2)
+        return new Docket(DocumentationType.OAS_30)
                 .select()
                 .paths(PathSelectors.any())
                 .apis(RequestHandlerSelectors.any())

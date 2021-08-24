@@ -4,12 +4,9 @@ import com.example.pizzas.entities.Pizza;
 import com.example.pizzas.repositories.PizzaRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.jdbc.CannotGetJdbcConnectionException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.sql.SQLDataException;
-import java.sql.SQLException;
 import java.util.*;
 
 @RestController
