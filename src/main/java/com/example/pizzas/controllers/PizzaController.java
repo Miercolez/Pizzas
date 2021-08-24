@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.*;
 
 @RestController
@@ -23,8 +24,9 @@ public class PizzaController {
         return pizzaRepository.findAll();
     }
 
-    @GetMapping("/pizzas/{name}")
+    @GetMapping("/pizzas/value={name}")
     List<Pizza> getSpecificPizza(@PathVariable("name") String name) {
+
         HashSet pizzas = new HashSet();
         pizzas.addAll(pizzaRepository.findPizzaByName(name));
         pizzas.addAll(pizzaRepository.findPizzaByIngredients(name));
@@ -32,6 +34,7 @@ public class PizzaController {
         try {
             pizzas.addAll(pizzaRepository.findPizzaByPrice(Integer.parseInt(name)));
         } catch (NumberFormatException e) {
+
         }
 
         if (pizzas.isEmpty())
@@ -44,12 +47,10 @@ public class PizzaController {
     @PostMapping("/pizzas")
     ResponseEntity<Pizza> addPizza(@RequestBody Pizza pizza) {
 
-        pizzaRepository.save(pizza);
-
-        return new ResponseEntity<>(pizza, HttpStatus.CREATED);
+        return new ResponseEntity<>(pizzaRepository.save(pizza), HttpStatus.CREATED);
     }
 
-    @PutMapping("/pizzas/{id}")
+    @PutMapping("/pizzas/id={id}")
     Optional<Pizza> updatePizza(@RequestBody Pizza newPizza, @PathVariable("id") Long id) {
 
         return pizzaRepository.findById(id)
@@ -61,7 +62,7 @@ public class PizzaController {
                 });
     }
 
-    @PatchMapping("/pizzas/{id}")
+    @PatchMapping("/pizzas/id={id}")
     Pizza partialUpdatePizza(@RequestBody Map<String, Object> changes, @PathVariable("id") Long id) {
 
         Pizza pizza = pizzaRepository.findById(id).get();
@@ -84,7 +85,7 @@ public class PizzaController {
         return pizzaRepository.save(pizza);
     }
 
-    @DeleteMapping("/pizzas/{id}")
+    @DeleteMapping("/pizzas/id={id}")
     void deletePizza(@PathVariable("id") Long id) {
         pizzaRepository.deleteById(id);
     }
