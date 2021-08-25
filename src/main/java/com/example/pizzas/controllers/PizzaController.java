@@ -24,7 +24,7 @@ public class PizzaController {
         return pizzaRepository.findAll();
     }
 
-    @GetMapping("/pizzas/value={name}")
+    @GetMapping("/pizzas/{name}")
     List<Pizza> getSpecificPizza(@PathVariable("name") String name) {
 
         HashSet pizzas = new HashSet();
@@ -50,7 +50,7 @@ public class PizzaController {
         return new ResponseEntity<>(pizzaRepository.save(pizza), HttpStatus.CREATED);
     }
 
-    @PutMapping("/pizzas/id={id}")
+    @PutMapping("/pizzas/{id}")
     Optional<Pizza> updatePizza(@RequestBody Pizza newPizza, @PathVariable("id") Long id) {
 
         return pizzaRepository.findById(id)
@@ -62,7 +62,7 @@ public class PizzaController {
                 });
     }
 
-    @PatchMapping("/pizzas/id={id}")
+    @PatchMapping("/pizzas/{id}")
     Pizza partialUpdatePizza(@RequestBody Map<String, Object> changes, @PathVariable("id") Long id) {
 
         Pizza pizza = pizzaRepository.findById(id).get();
@@ -85,7 +85,7 @@ public class PizzaController {
         return pizzaRepository.save(pizza);
     }
 
-    @DeleteMapping("/pizzas/id={id}")
+    @DeleteMapping("/pizzas/{id}")
     void deletePizza(@PathVariable("id") Long id) {
         pizzaRepository.deleteById(id);
     }
